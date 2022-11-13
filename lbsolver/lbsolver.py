@@ -97,11 +97,12 @@ num_let_dict = get_ranked_words(words)
 sorted_keys = sorted(num_let_dict, reverse=True)
 
 answers = []
+used = set()
 
 
 def dfs(word: str, possible_answer: tuple):
 
-    if len(possible_answer) >= max_size:
+    if len(possible_answer) >= max_size or word in used:
         return
 
     possible_answer = possible_answer + (word,)
@@ -113,6 +114,7 @@ def dfs(word: str, possible_answer: tuple):
             for next_word in num_let_dict[key]:
                 dfs(next_word, possible_answer)
     else:
+        used.update(possible_answer)
         answers.append(possible_answer)
         return
 
