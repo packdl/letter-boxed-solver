@@ -1,6 +1,6 @@
 import pprint as pp
 from collections import defaultdict
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from random import choice
 
 try:
@@ -38,30 +38,37 @@ def check_for_unused_letters(word, unused_letters) -> bool:
     return any(letter in unused_letters for letter in word)
 
 
-def generate_valid_words(dictionary_path: str = None) -> Iterator[str]:
-    if not dictionary_path:
-        dictionary_path = "/usr/share/dict/words"
+def generate_valid_words_from_file(file=None) -> Sequence[str]:
+    if not file:
+        file = "/usr/share/dict/words"
 
-    with open(dictionary_path, "r") as dictionary:
-        for item in dictionary:
-            item = item.strip()
-            if (
-                item[0].islower()
-                and len(item) >= 3
-                and all(letter in game_letters for letter in item.lower())  # type: ignore
-            ):
-                item = item.lower().strip()
-                if not item:
-                    continue
+    with open(file, "r") as dictionary:
+        dictionary_words = dictionary.readlines()
+        return generate_valid_words(dictionary_words)
 
-                valid_word = is_word_valid(item)
-                if valid_word:
-                    yield item
-            else:
+
+def generate_valid_words(dictionary: Sequence[str]) -> Sequence[str]:
+    """Generate an iterable of valid words from a dictionary"""
+    for item in dictionary:
+        item = item.strip()
+        if (
+            item[0].islower()
+            and len(item) >= 3
+            and all(letter in game_letters for letter in item.lower())  # type: ignore
+        ):
+            item = item.lower().strip()
+            if not item:
                 continue
+
+            valid_word = is_word_valid(item)
+            if valid_word:
+                yield item
+        else:
+            continue
 
 
 def is_word_valid(word) -> bool:
+    """Check whether a word is valid based upon Letter Boxed Game rules"""
     valid_word = True
     for a, b in zip(word, word[1:]):
         if a == b:
@@ -74,10 +81,10 @@ def is_word_valid(word) -> bool:
     return valid_word
 
 
-valid_words = set(generate_valid_words())
+valid_words = set(generate_valid_words_from_file())
 
 
-def get_ranked_words(words=valid_words) -> dict:
+def get_ranked_words(words=valid_words) -> dict[int, str]:
     """Organized valid words into a dictionary with a tuple as a key
 
     Key is a tuple(len(set(used letters)), first_letter_of_word) - A higher # of used letters is better ranked.
