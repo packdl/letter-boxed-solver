@@ -21,20 +21,20 @@ side4 = all_sides[10:13]
 game_letters = side1 + side2 + side3 + side4
 
 
-def get_side(letter, sides):
+def get_side(letter, sides) -> list:
     for side in sides:
         if letter in side:
             return side
     return []
 
 
-def get_unused_letters(my_word, g_letters):
+def get_unused_letters(my_word, g_letters) -> set:
     my_word = set(my_word)
     g_letters = set(g_letters)
     return g_letters.difference(my_word)
 
 
-def check_for_unused_letters(word, unused_letters):
+def check_for_unused_letters(word, unused_letters) -> bool:
     return any(letter in unused_letters for letter in word)
 
 
@@ -42,26 +42,26 @@ def generate_valid_words(dictionary_path: str = None) -> Iterator[str]:
     if not dictionary_path:
         dictionary_path = "/usr/share/dict/words"
 
-        with open(dictionary_path, "r") as dictionary:
-            for word in dictionary:
-                word = word.strip()
-                if (
-                    word[0].islower()
-                    and len(word) >= 3
-                    and all(letter in game_letters for letter in word.lower())  # type: ignore
-                ):
-                    word = word.lower().strip()
-                    if not word:
-                        continue
-
-                    valid_word = is_word_valid(word)
-                    if valid_word:
-                        yield word
-                else:
+    with open(dictionary_path, "r") as dictionary:
+        for item in dictionary:
+            item = item.strip()
+            if (
+                item[0].islower()
+                and len(item) >= 3
+                and all(letter in game_letters for letter in item.lower())  # type: ignore
+            ):
+                item = item.lower().strip()
+                if not item:
                     continue
 
+                valid_word = is_word_valid(item)
+                if valid_word:
+                    yield item
+            else:
+                continue
 
-def is_word_valid(word):
+
+def is_word_valid(word) -> bool:
     valid_word = True
     for a, b in zip(word, word[1:]):
         if a == b:
@@ -74,10 +74,10 @@ def is_word_valid(word):
     return valid_word
 
 
-words = list(generate_valid_words())
+valid_words = set(generate_valid_words())
 
 
-def get_ranked_words(words) -> dict:
+def get_ranked_words(words=valid_words) -> dict:
     """Organized valid words into a dictionary with a tuple as a key
 
     Key is a tuple(len(set(used letters)), first_letter_of_word) - A higher # of used letters is better ranked.
@@ -92,9 +92,9 @@ def get_ranked_words(words) -> dict:
     return num_let_dict
 
 
-num_let_dict = get_ranked_words(words)
+ranked_words_dict = get_ranked_words()
 
-sorted_keys = sorted(num_let_dict, reverse=True)
+sorted_keys = sorted(ranked_words_dict, reverse=True)
 
 answers = []
 used = set()
@@ -102,7 +102,7 @@ used = set()
 
 def dfs(word: str, possible_answer: tuple):
 
-    if len(possible_answer) >= max_size or word in used:
+    if len(possible_answer) >= max_size or word in used or word not in valid_words:
         return
 
     possible_answer = possible_answer + (word,)
@@ -111,7 +111,7 @@ def dfs(word: str, possible_answer: tuple):
 
         filter_keys = (key for key in sorted_keys if key[1] == word[-1])
         for key in sorted(filter_keys, reverse=True):
-            for next_word in num_let_dict[key]:
+            for next_word in ranked_words_dict[key]:
                 dfs(next_word, possible_answer)
     else:
         used.update(possible_answer)
@@ -121,6 +121,6 @@ def dfs(word: str, possible_answer: tuple):
 
 if __name__ == "__main__":
     for key in sorted_keys:
-        for word in num_let_dict[key]:
+        for word in ranked_words_dict[key]:
             dfs(word, tuple())
     pp.pprint(answers)
