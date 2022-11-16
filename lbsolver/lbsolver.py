@@ -1,7 +1,59 @@
 import pprint as pp
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from collections.abc import Iterator, Sequence
 from random import choice
+from typing import NamedTuple, Tuple, List
+from dataclasses import dataclass
+
+
+class Gameboard:
+    def __init__(self, board: str | List[str]) -> None:
+        """An board represented as a string.
+
+        board - a str or a list of one character strings
+        """
+
+        if len(board) != 12:
+            raise ValueError(f"{board} is not valid. Board must only be 12 characters")
+        if isinstance(board, str):
+            if not board.isalpha() or len(set(board)) != 12:
+                raise ValueError(
+                    f"{board} is not valid. Board must be alphabetic characters only and 12 unique characters"
+                )
+        else:
+            if "".join(board).isalpha():
+                raise ValueError(
+                    f"{board} is not valid. Board must be alphabetic characters only"
+                )
+        self._board = "".join(board)
+
+    @property
+    def side1(self):
+        return self._board[0:3]
+
+    @property
+    def side2(self):
+        return self._board[3:6]
+
+    @property
+    def side3(self):
+        return self._board[6:9]
+
+    @property
+    def side4(self):
+        return self._board[9:12]
+
+    @property
+    def board(self):
+        return list(self._board)
+
+    def __repr__(self) -> str:
+        return f"""Board: {self.board} 
+        Side 1: {self.side1}
+        Side 2: {self.side2}
+        Side 3: {self.side3}
+        Side 4: {self.side4}"""
+
 
 try:
     with open("settings", "r") as settings:
