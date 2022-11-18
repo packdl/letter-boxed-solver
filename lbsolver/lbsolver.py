@@ -21,7 +21,7 @@ class Gameboard:
                     f"{board} is not valid. Board must be alphabetic characters only and 12 unique characters"
                 )
         else:
-            if "".join(board).isalpha():
+            if not "".join(board).isalpha():
                 raise ValueError(
                     f"{board} is not valid. Board must be alphabetic characters only"
                 )
