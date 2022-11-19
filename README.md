@@ -1,2 +1,2 @@
-# letter-box-solver
+# letter-boxed-solver
 This is initially a simple script to solve the NYT Letter Box game using the default English words dictionary.

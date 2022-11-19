@@ -1,3 +1,6 @@
+"""The lbsolver module provides classes and methods to solve the NYT
+Letter Boxed game.
+"""
 from collections import defaultdict
 from collections.abc import Iterator, Sequence
 from typing import List
@@ -10,7 +13,8 @@ class Gameboard:
 
     :param board: A string or list of strings that represent the board.
     :type board: list|str
-    :raise ValueError: If the board is invalid (incorrect length, non-alphabet characters or repeated characters)
+    :raise ValueError: If the board is invalid
+    (incorrect length, non-alphabet characters or repeated characters)
     """
 
     def __init__(self, board: str | List[str]) -> None:
@@ -21,7 +25,8 @@ class Gameboard:
         if isinstance(board, str):
             if not board.isalpha() or len(set(board)) != 12:
                 raise ValueError(
-                    f"{board} is not valid. Board must be alphabetic characters only and 12 unique characters"
+                    f"{board} is not valid. Board must be alphabetic"
+                    " characters only and 12 unique characters"
                 )
         else:
             if not "".join(board).isalpha():
@@ -51,7 +56,7 @@ class Gameboard:
         return list(self._board)
 
     def __repr__(self) -> str:
-        return f"""Board: {self.board} 
+        return f"""Board: {self.board}
         Side 1: {self.side1}
         Side 2: {self.side2}
         Side 3: {self.side3}
@@ -97,7 +102,7 @@ class LBSolver:
         return g_letters.difference(my_word_set)
 
     def possible_on_board(self, word_sequence: str) -> bool:
-        """Check whether a sequence is possible based upon Letter Box rules. It
+        """Check whether a sequence is possible based upon Letter Boxed rules. It
         does not determine whether the sequence is a word.
         """
         valid_sequence = True
@@ -193,15 +198,16 @@ class LBSolver:
 
 if __name__ == "__main__":
 
-    myboard = Gameboard("g i y e r c p o l a h x".strip().split())
+    myboard = Gameboard("s l g a t i p r y h f o".strip().split())
 
     file = "/usr/share/dict/words"
 
-    with open(file, "r") as dictionary_file:
+    with open(file, "r", encoding="utf-8") as dictionary_file:
         dictionary_words = dictionary_file.readlines()
 
     solver = LBSolver(myboard, dictionary_words)
-    pp(solver.solve(max_num_words=3, minimum_answers=10))
+    pp(solver.solve(max_num_words=2, minimum_answers=10))
 
     # add a decline feature to intensionally skip words
     # Make it so we can reset to gameboard and dictionary used with solver
+    # Consider setting the run to solve for 1 to (max-num_words-1) to see different potential answer sets
