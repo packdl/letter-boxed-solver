@@ -19,7 +19,7 @@ def test_valid_board():
 
 
 @pytest.mark.parametrize(
-    "input,expectation",
+    "my_input,expectation",
     [
         ("123k34dlkdfj", pytest.raises(ValueError)),
         ("abcdefg", pytest.raises(ValueError)),
@@ -28,6 +28,6 @@ def test_valid_board():
         ("aaabbbcccddd", pytest.raises(ValueError)),
     ],
 )
-def test_valid_and_invalid_boards(input, expectation):
+def test_valid_and_invalid_boards(my_input, expectation):
     with expectation:
-        gb1 = Gameboard(input)
+        Gameboard(my_input)
