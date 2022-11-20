@@ -29,10 +29,15 @@ class Gameboard:
                     " characters only and 12 unique characters"
                 )
         else:
-            if not "".join(board).isalpha():
+            try:
+                if not "".join(board).isalpha():
+                    raise ValueError(
+                        f"{board} is not valid. Board must be alphabetic characters only"
+                    )
+            except Exception as exc:
                 raise ValueError(
                     f"{board} is not valid. Board must be alphabetic characters only"
-                )
+                ) from exc
         self._board = "".join(board)
 
     @property

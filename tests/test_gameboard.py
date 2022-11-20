@@ -24,8 +24,14 @@ def test_valid_board():
         ("123k34dlkdfj", pytest.raises(ValueError)),
         ("abcdefg", pytest.raises(ValueError)),
         ("abcdefghijkl", nullcontext()),
+        (list("abcdefghijkl"), nullcontext()),
         ("abcdefghijklm", pytest.raises(ValueError)),
         ("aaabbbcccddd", pytest.raises(ValueError)),
+        (["a", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], pytest.raises(ValueError)),
+        (
+            ["a", "1", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"],
+            pytest.raises(ValueError),
+        ),
     ],
 )
 def test_valid_and_invalid_boards(my_input, expectation):
