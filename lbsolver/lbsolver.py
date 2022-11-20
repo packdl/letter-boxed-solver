@@ -12,7 +12,7 @@ class Gameboard:
     representing the board.
 
     :param board: A string or list of strings that represent the board.
-    :type board: list|str
+    :type board: list or str
     :raise ValueError: If the board is invalid
     (incorrect length, non-alphabet characters or repeated characters)
     """
@@ -37,22 +37,27 @@ class Gameboard:
 
     @property
     def side1(self):
+        """Get board side 1"""
         return self._board[0:3]
 
     @property
     def side2(self):
+        """Get board side 2"""
         return self._board[3:6]
 
     @property
     def side3(self):
+        """Get board side 3"""
         return self._board[6:9]
 
     @property
     def side4(self):
+        """Get board side 4"""
         return self._board[9:12]
 
     @property
     def board(self):
+        """The board represented as a list of strings"""
         return list(self._board)
 
     def __repr__(self) -> str:
@@ -63,6 +68,13 @@ class Gameboard:
         Side 4: {self.side4}"""
 
     def get_side_for_letter(self, letter: str) -> str | None:
+        """Get the side a letter is on.
+
+        :param letter: A string of length 1 with a single letter.
+        :type letter: str
+        :return: A str representing the side or None in case where the character is not on a side.
+        :rtype: str or None
+        """
         sides = [self.side1, self.side2, self.side3, self.side4]
 
         for side in sides:
@@ -78,7 +90,7 @@ class LBSolver:
         :param gameboard: A gameboard representing the letters in the Letter Boxed game
         :type gameboard: :class: `lbsolver.lbsolver.Gameboard`
         :param dictionary: A backing dictionary to use to find potential answers
-        :type dictionary: Sequence
+        :type dictionary: Sequence[str]
 
     """
 
@@ -90,37 +102,60 @@ class LBSolver:
 
     @property
     def gameboard(self):
+        """A gameboard instance"""
         return self.__gameboard
 
     @property
     def dictionary(self):
+        """The dictionary instance"""
         return self.__dictionary
 
     def get_unused_letters(self, my_word: str) -> set:
+        """Given a word, identify characters on the gameboard not used.
+
+        :param my_word: A word to evaluate against the gameboard.
+        :type my_word: str
+        :raise ValueError: If the word contains characters not on the gameboard.
+        :return: A set of unused characters from the gameboard.
+        :rtype: set
+        """
+        my_word = my_word.strip()
+
         my_word_set = set(my_word)
         g_letters = set(list(self.gameboard.board))
+
+        if my_word_set.difference(g_letters):
+            raise ValueError(
+                f"Word: {my_word} contains letters not found in gameboard: "
+                f"{self.gameboard.board}"
+            )
         return g_letters.difference(my_word_set)
 
     def possible_on_board(self, word_sequence: str) -> bool:
         """Check whether a sequence is possible based upon Letter Boxed rules. It
         does not determine whether the sequence is a word.
+
+        :param word_sequence: Check whether a potential word is possible on the board.
+        :type word_sequence: str
+        :return: True if sequence is possible on board, false otherwise
+        :rtype: bool
         """
         valid_sequence = True
-        a, b = ("", "")
-        for a, b in zip(word_sequence, word_sequence[1:]):
-            if a == b:
+        first_let, second_let = ("", "")
+        for first_let, second_let in zip(word_sequence, word_sequence[1:]):
+            if first_let == second_let:
                 valid_sequence = False
                 break
-            side = self.gameboard.get_side_for_letter(a)
+            side = self.gameboard.get_side_for_letter(first_let)
             # side = get_side(a, [side1, side2, side3, side4])
             if not side:
                 valid_sequence = False
                 break
-            elif b in side:
+            elif second_let in side:
                 valid_sequence = False
                 break
 
-        if not self.gameboard.get_side_for_letter(b):
+        if not self.gameboard.get_side_for_letter(second_let):
             return False
         return valid_sequence
 
@@ -129,6 +164,11 @@ class LBSolver:
     ) -> Iterator[str]:
         """Based on the current gameboard, generate a set of valid words from
         dictionary. If dictionary parameter is not set, default dictionary is used.
+
+        :param dictionary: An dictionary to use to find valid words
+        :type dictionary: Sequence[str]
+        :return: A set of valid words
+        :rtype: Iterator[str]
         """
         if not dictionary:
             dictionary = self.dictionary
@@ -153,6 +193,16 @@ class LBSolver:
     def solve(
         self, max_num_words: int = 3, minimum_answers: int = 1
     ) -> Sequence[tuple]:
+        """Solve the puzzle based on the current dictionary and gameboard.
+
+        :param max_num_words: The maximum number of words allowed in an answer
+        :type max_num_words: int
+        :param minimum_answers: The minimum number of answers to retrieve. Solve
+        will stop after finding this number of answers
+        :type minimum_answers: int
+        :return: A list filled with answer tuples
+        :rtype: Sequence[tuple]
+        """
         self.__answers.clear()
 
         word_ranking_map = defaultdict(list)
@@ -200,14 +250,10 @@ if __name__ == "__main__":
 
     myboard = Gameboard("s l g a t i p r y h f o".strip().split())
 
-    file = "/usr/share/dict/words"
+    FILE = "/usr/share/dict/words"
 
-    with open(file, "r", encoding="utf-8") as dictionary_file:
+    with open(FILE, "r", encoding="utf-8") as dictionary_file:
         dictionary_words = dictionary_file.readlines()
 
     solver = LBSolver(myboard, dictionary_words)
     pp(solver.solve(max_num_words=2, minimum_answers=10))
-
-    # add a decline feature to intensionally skip words
-    # Make it so we can reset to gameboard and dictionary used with solver
-    # Consider setting the run to solve for 1 to (max-num_words-1) to see different potential answer sets
