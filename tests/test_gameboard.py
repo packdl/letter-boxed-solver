@@ -1,6 +1,6 @@
-from lbsolver.lbsolver import Gameboard
 from contextlib import nullcontext
 import pytest
+from lbsolver.lbsolver import Gameboard
 
 
 def test_valid_board():
@@ -16,6 +16,8 @@ def test_valid_board():
     assert gb1.get_side_for_letter("n") == "nwr"
     assert gb1.get_side_for_letter("l") == "elt"
     assert gb1.get_side_for_letter("s") is None
+    assert gb1.board == list("nwrabicodelt")
+    assert "Side 1" in str(gb1) and "nwr" in str(gb1)
 
 
 @pytest.mark.parametrize(

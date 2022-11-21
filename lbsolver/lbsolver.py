@@ -96,24 +96,47 @@ class LBSolver:
         :type gameboard: :class: `lbsolver.lbsolver.Gameboard`
         :param dictionary: A backing dictionary to use to find potential answers
         :type dictionary: Sequence[str]
+        :raise TypeError: If gameboard or dictionary is set to None
 
     """
 
     def __init__(self, gameboard: Gameboard, dictionary: Sequence[str]) -> None:
         """Constructor method"""
+
+        if gameboard is None:
+            raise TypeError("Gameboard was set to None.")
+
+        if dictionary is None:
+            raise TypeError("Dictionary was set to None.")
+
         self.__gameboard = gameboard
         self.__dictionary = dictionary
         self.__answers: List[tuple] = []
 
     @property
-    def gameboard(self):
+    def gameboard(self) -> Gameboard:
         """A gameboard instance"""
         return self.__gameboard
 
+    @gameboard.setter
+    def gameboard(self, new_board: Gameboard):
+        if new_board:
+            self.__gameboard = new_board
+        else:
+            raise TypeError("gameboard cannot be set to None")
+
     @property
-    def dictionary(self):
+    def dictionary(self) -> Sequence[str]:
         """The dictionary instance"""
         return self.__dictionary
+
+    @dictionary.setter
+    def dictionary(self, dictionary: Sequence[str]):
+        "Setting the dictionary"
+        if dictionary:
+            self.__dictionary = dictionary
+        else:
+            raise TypeError("dictionary cannot be set to None")
 
     def get_unused_letters(self, my_word: str) -> set:
         """Given a word, identify characters on the gameboard not used.
@@ -180,14 +203,14 @@ class LBSolver:
 
         for item in dictionary:
             item = item.strip()
+            if not item:
+                continue
             if (
                 item[0].islower()
                 and len(item) >= 3
                 and all(letter in self.gameboard.board for letter in item.lower())  # type: ignore
             ):
                 item = item.lower().strip()
-                if not item:
-                    continue
 
                 valid_word = self.possible_on_board(item)
                 if valid_word:
