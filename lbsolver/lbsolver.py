@@ -219,7 +219,7 @@ class LBSolver:
                 continue
 
     def solve(
-        self, max_num_words: int = 3, minimum_answers: int = 1
+        self, max_num_words: int = 3, minimum_answers: int = 1, skip: str = ""
     ) -> Sequence[tuple]:
         """Solve the puzzle based on the current dictionary and gameboard.
 
@@ -228,6 +228,8 @@ class LBSolver:
         :param minimum_answers: The minimum number of answers to retrieve. Solve
         will stop after finding this number of answers
         :type minimum_answers: int
+        :param skip: A list of words separated by commas. Words in this list will be skipped from answers
+        :type skip: str
         :return: A list filled with answer tuples
         :rtype: Sequence[tuple]
         """
@@ -242,9 +244,10 @@ class LBSolver:
             word_ranking_map[(num_letters_used, word[0])].append(word)
         sorted_keys = sorted(word_ranking_map, reverse=True)
         used = set()
+        skip_list = list(skip_word.strip() for skip_word in skip.lower().split(","))
 
         def dfs(word: str, possible_answer: tuple):
-            if len(self.__answers) >= minimum_answers:
+            if len(self.__answers) >= minimum_answers or word in skip_list:
                 return
 
             if (
@@ -270,18 +273,19 @@ class LBSolver:
             if len(self.__answers) >= minimum_answers:
                 break
             for word in word_ranking_map[key]:
-                dfs(word, tuple())
+                if word.lower() not in skip_list:
+                    dfs(word, tuple())
         return self.__answers
 
 
 if __name__ == "__main__":
 
-    myboard = Gameboard("s l g a t i p r y h f o".strip().split())
-
+    # myboard = Gameboard("s l g a t i p r y h f o".strip().split())
+    myboard = Gameboard("g i y e r c p o l a h x".split())
     FILE = "/usr/share/dict/words"
 
     with open(FILE, "r", encoding="utf-8") as dictionary_file:
         dictionary_words = dictionary_file.readlines()
 
     solver = LBSolver(myboard, dictionary_words)
-    pp(solver.solve(max_num_words=2, minimum_answers=10))
+    pp(solver.solve(max_num_words=2, minimum_answers=10, skip="lexicography"))

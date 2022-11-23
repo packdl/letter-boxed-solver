@@ -119,10 +119,18 @@ def test_generate_valid_words(lbsolver1):
     assert " " not in results
 
 
-def test_solver(gameboard3, dictionary2, lbsolver1):
+def test_solver(gameboard3, dictionary2, lbsolver1, gameboard1, dictionary):
     solver = LBSolver(gameboard3, dictionary2)
     result = solver.solve()
     assert len(result) == 1
     assert set(result[0]) == set(dictionary2)
 
     assert len(lbsolver1.solve()) >= 1
+
+    solver2 = LBSolver(gameboard1, dictionary)
+    answer = solver2.solve(1)
+    assert len(answer) == 1
+
+    solver2 = LBSolver(gameboard1, dictionary)
+    answer2 = solver2.solve(1, 1, skip="lexicography")
+    assert len(answer2) == 0
