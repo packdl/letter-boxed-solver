@@ -87,6 +87,15 @@ class Gameboard:
                 return side
         return None
 
+    @staticmethod
+    def default_board():
+        """A utility method creating a default board that is known to generate results
+
+        :return: A gameboard composed of 'giyercpolahx'
+        :rtype: :class:`lbsolver.lbsolver.Gameboard`
+        """
+        return Gameboard("g i y e r c p o l a h x".split())
+
 
 class LBSolver:
     """This is the solver class. It requires a :class:`lbsolver.lbsolver.Gameboard`
@@ -230,10 +239,17 @@ class LBSolver:
         :type minimum_answers: int
         :param skip: A list of words separated by commas. Words in this list will be skipped from answers
         :type skip: str
+        :raise ValueError: if max_num_words or minimum_answers is less than or equal to zero.
         :return: A list filled with answer tuples
         :rtype: Sequence[tuple]
         """
         self.__answers.clear()
+
+        if max_num_words <= 0:
+            raise ValueError("max_num_words must be greater than zero")
+
+        if minimum_answers <= 0:
+            raise ValueError("minimum_answers must be greater than zero")
 
         word_ranking_map = defaultdict(list)
         valid_words = set(self.generate_valid_words())
@@ -247,6 +263,15 @@ class LBSolver:
         skip_list = list(skip_word.strip() for skip_word in skip.lower().split(","))
 
         def dfs(word: str, possible_answer: tuple):
+            if any(
+                word.lower().strip() == answer.lower().strip()
+                for answer in possible_answer
+            ):
+                return
+
+            if word.strip() in possible_answer:
+                return
+
             if len(self.__answers) >= minimum_answers or word in skip_list:
                 return
 

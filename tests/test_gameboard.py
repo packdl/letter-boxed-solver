@@ -3,6 +3,11 @@ import pytest
 from lbsolver.lbsolver import Gameboard
 
 
+def test_default_board():
+    assert isinstance(Gameboard.default_board(), Gameboard)
+    Gameboard.default_board().board == "g i y e r c p o l a h x".split()
+
+
 def test_valid_board():
     gb1 = Gameboard("n w r a b i c o d e l t".split())
     assert gb1.side1 == "nwr"

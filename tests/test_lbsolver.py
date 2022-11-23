@@ -134,3 +134,16 @@ def test_solver(gameboard3, dictionary2, lbsolver1, gameboard1, dictionary):
     solver2 = LBSolver(gameboard1, dictionary)
     answer2 = solver2.solve(1, 1, skip="lexicography")
     assert len(answer2) == 0
+
+    with pytest.raises(ValueError):
+        solver2.solve(-1)
+
+    with pytest.raises(ValueError):
+        solver2.solve(3, -1)
+
+
+def test_nonrepeating_answers(dictionary):
+    solver = LBSolver(Gameboard.default_board(), dictionary)
+    answers = solver.solve(8, 5)
+    for answer in answers:
+        assert len(answer) == len(set(answer))
