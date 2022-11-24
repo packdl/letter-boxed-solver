@@ -373,13 +373,22 @@ if __name__ == "__main__":
 
     dictionary_words = args.dictionary.readlines()
 
-    solver = LBSolver(myboard, dictionary_words)
-
-    final_answers = solver.solve(
-        max_num_words=args.answer_size,
-        minimum_answers=args.total_answers,
-        skip=args.skip,
-    )
+    try:
+        solver = LBSolver(myboard, dictionary_words)
+        final_answers = solver.solve(
+            max_num_words=args.answer_size,
+            minimum_answers=args.total_answers,
+            skip=args.skip,
+        )
+    except ValueError as exc:
+        parser.print_usage(sys.stderr)
+        print(
+            f"LBSolver: error: {'answer_size' if 'minimum_answers' in str(exc) else 'total_answers'}"
+            " must be greater than zero.",
+            file=sys.stderr,
+        )
+        args.output.close()
+        sys.exit(1)
 
     if final_answers:
         for id, answer in enumerate(final_answers, start=1):
