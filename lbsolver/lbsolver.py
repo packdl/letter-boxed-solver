@@ -366,27 +366,29 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    myboard = Gameboard(args.board)
-    # FILE = "/usr/share/dict/words"
-
-    # FILE = args.dictionary
-
-    dictionary_words = args.dictionary.readlines()
 
     try:
+        myboard = Gameboard(args.board)
+        dictionary_words = args.dictionary.readlines()
         solver = LBSolver(myboard, dictionary_words)
         final_answers = solver.solve(
             max_num_words=args.answer_size,
             minimum_answers=args.total_answers,
             skip=args.skip,
         )
-    except ValueError as exc:
+    except ValueError as exc1:
         parser.print_usage(sys.stderr)
-        print(
-            f"LBSolver: error: {'answer_size' if 'minimum_answers' in str(exc) else 'total_answers'}"
-            " must be greater than zero.",
-            file=sys.stderr,
-        )
+        if "Board must" in str(exc1):
+            print(
+                "LBSolver: error: board is not valid. It must be only 12 alphabetic characters.",
+                file=sys.stderr,
+            )
+        else:
+            print(
+                f"LBSolver: error: {'answer_size' if 'minimum_answers' in str(exc) else 'total_answers'}"
+                " must be greater than zero.",
+                file=sys.stderr,
+            )
         args.output.close()
         sys.exit(1)
 
