@@ -4,8 +4,8 @@ Letter Boxed game.
 import argparse
 from collections import defaultdict
 from collections.abc import Iterator, Sequence
+import sys
 from typing import List
-from pprint import pprint as pp
 
 
 class Gameboard:
@@ -325,7 +325,7 @@ if __name__ == "__main__":
         metavar="dictionary",
         help="The path to a dictionary for the puzzle to select words from."
         "Should be a text file.",
-        type=str,
+        type=argparse.FileType("r"),
         default="/usr/share/dict/words",
     )
 
@@ -347,14 +347,46 @@ if __name__ == "__main__":
         default=10,
     )
 
+    parser.add_argument(
+        "-s",
+        "--skip",
+        metavar="skipwords",
+        help="A comma separated list of words to not use in the answer-set",
+        type=str,
+        default="",
+    )
+
+    parser.add_argument(
+        "-o",
+        "--output",
+        metavar="FILE",
+        help="Output file for results. Defaults to standard out",
+        type=argparse.FileType("w"),
+        default=sys.stdout,
+    )
+
     args = parser.parse_args()
     myboard = Gameboard(args.board)
     # FILE = "/usr/share/dict/words"
 
-    FILE = args.dictionary
+    # FILE = args.dictionary
 
-    with open(FILE, "r", encoding="utf-8") as dictionary_file:
-        dictionary_words = dictionary_file.readlines()
+    dictionary_words = args.dictionary.readlines()
 
     solver = LBSolver(myboard, dictionary_words)
-    pp(solver.solve(max_num_words=args.answer_size, minimum_answers=args.total_answers))
+
+    final_answers = solver.solve(
+        max_num_words=args.answer_size,
+        minimum_answers=args.total_answers,
+        skip=args.skip,
+    )
+
+    if final_answers:
+        for id, answer in enumerate(final_answers, start=1):
+            print(f"Answer {id:>2}: {'---'.join(answer)}", file=args.output)
+    else:
+        print(
+            "No answers for given board and dictionary for requested answer size",
+            file=args.output,
+        )
+    args.output.close()
