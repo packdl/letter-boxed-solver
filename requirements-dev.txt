@@ -2,3 +2,4 @@ black
 coverage
 rich
 pytest
+sphinx
