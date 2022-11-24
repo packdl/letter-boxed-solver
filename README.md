@@ -9,7 +9,7 @@ Good recommendations for words files include:
 Using an example on Linux
 ```
 from lbsolver.lbsolver import Gameboard, LBSolver
-board = Gameboard.default_board()
+board = Gameboard("t n m h r v i k e a u b".split())
 FILE = '/usr/share/dict/words'
 with open(FILE,'r') as my_file:
     dictionary = my_file.readlines()

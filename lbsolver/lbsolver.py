@@ -1,6 +1,7 @@
 """The lbsolver module provides classes and methods to solve the NYT
 Letter Boxed game.
 """
+import argparse
 from collections import defaultdict
 from collections.abc import Iterator, Sequence
 from typing import List
@@ -237,7 +238,8 @@ class LBSolver:
         :param minimum_answers: The minimum number of answers to retrieve. Solve
         will stop after finding this number of answers
         :type minimum_answers: int
-        :param skip: A list of words separated by commas. Words in this list will be skipped from answers
+        :param skip: A list of words separated by commas. Words in this list will be skipped
+        from answers
         :type skip: str
         :raise ValueError: if max_num_words or minimum_answers is less than or equal to zero.
         :return: A list filled with answer tuples
@@ -305,12 +307,54 @@ class LBSolver:
 
 if __name__ == "__main__":
 
-    # myboard = Gameboard("s l g a t i p r y h f o".strip().split())
-    myboard = Gameboard("g i y e r c p o l a h x".split())
-    FILE = "/usr/share/dict/words"
+    parser = argparse.ArgumentParser(
+        prog="LBSolver",
+        description="Generate solutions to the NYT Letter-Boxed puzzle",
+    )
+    parser.add_argument(
+        "board",
+        help="A string representing the board in format 'abcdefghijkl' where each group of 3 letters represents a side. ",
+        nargs="?",
+        default="giyercpolahx",
+        type=str,
+    )
+
+    parser.add_argument(
+        "-d",
+        "--dictionary",
+        metavar="dictionary",
+        help="The path to a dictionary for the puzzle to select words from."
+        "Should be a text file.",
+        type=str,
+        default="/usr/share/dict/words",
+    )
+
+    parser.add_argument(
+        "-a",
+        "--answer-size",
+        metavar="total_words",
+        help="Maximum number of words allowed in an answer",
+        type=int,
+        default=3,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--total-answers",
+        metavar="answers",
+        help="The number of answers you want back.",
+        type=int,
+        default=10,
+    )
+
+    args = parser.parse_args()
+    myboard = Gameboard(args.board)
+    # FILE = "/usr/share/dict/words"
+
+    FILE = args.dictionary
 
     with open(FILE, "r", encoding="utf-8") as dictionary_file:
         dictionary_words = dictionary_file.readlines()
 
     solver = LBSolver(myboard, dictionary_words)
-    pp(solver.solve(max_num_words=2, minimum_answers=10, skip="lexicography"))
+    pp(solver.solve(max_num_words=args.answer_size, minimum_answers=args.total_answers))
