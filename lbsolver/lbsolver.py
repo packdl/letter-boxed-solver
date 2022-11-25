@@ -1,6 +1,5 @@
 """The lbsolver module provides classes and methods to solve the NYT
-Letter Boxed game.
-"""
+Letter Boxed game."""
 import argparse
 from collections import defaultdict
 from collections.abc import Iterator, Sequence
@@ -9,13 +8,13 @@ from typing import List
 
 
 class Gameboard:
-    """This is a class that represents a Gameboard for a solver. Takes a string
+    """
+    This is a class that represents a Gameboard for a solver. Takes a string
     representing the board.
 
     :param board: A string or list of strings that represent the board.
     :type board: list or str
-    :raise ValueError: If the board is invalid
-    (incorrect length, non-alphabet characters or repeated characters)
+    :raise ValueError: If the board is invalid (incorrect length, non-alphabet characters or repeated characters)
     """
 
     def __init__(self, board: str | List[str]) -> None:
@@ -76,7 +75,8 @@ class Gameboard:
         Side 4: {self.side4}"""
 
     def get_side_for_letter(self, letter: str) -> str | None:
-        """Get the side a letter is on.
+        """
+        Get the side a letter is on.
 
         :param letter: A string of length 1 with a single letter.
         :type letter: str
@@ -92,7 +92,8 @@ class Gameboard:
 
     @staticmethod
     def default_board():
-        """A utility method creating a default board that is known to generate results
+        """
+        A utility method creating a default board that is known to generate results
 
         :return: A gameboard composed of 'giyercpolahx'
         :rtype: :class:`lbsolver.lbsolver.Gameboard`
@@ -101,7 +102,8 @@ class Gameboard:
 
 
 class LBSolver:
-    """This is the solver class. It requires a :class:`lbsolver.lbsolver.Gameboard`
+    """
+    This is the solver class. It requires a :class:`lbsolver.lbsolver.Gameboard`
     and a dictionary to generate a set of answers to the Letter Boxed game.
 
         :param gameboard: A gameboard representing the letters in the Letter Boxed game
@@ -151,7 +153,8 @@ class LBSolver:
             raise TypeError("dictionary cannot be set to None")
 
     def get_unused_letters(self, my_word: str) -> set:
-        """Given a word, identify characters on the gameboard not used.
+        """
+        Given a word, identify characters on the gameboard not used.
 
         :param my_word: A word to evaluate against the gameboard.
         :type my_word: str
@@ -172,7 +175,8 @@ class LBSolver:
         return g_letters.difference(my_word_set)
 
     def possible_on_board(self, word_sequence: str) -> bool:
-        """Check whether a sequence is possible based upon Letter Boxed rules. It
+        """
+        Check whether a sequence is possible based upon Letter Boxed rules. It
         does not determine whether the sequence is a word.
 
         :param word_sequence: Check whether a potential word is possible on the board.
@@ -202,7 +206,8 @@ class LBSolver:
     def generate_valid_words(
         self, dictionary: Sequence[str] | None = None
     ) -> Iterator[str]:
-        """Based on the current gameboard, generate a set of valid words from
+        """
+        Based on the current gameboard, generate a set of valid words from
         dictionary. If dictionary parameter is not set, default dictionary is used.
 
         :param dictionary: An dictionary to use to find valid words
@@ -233,7 +238,8 @@ class LBSolver:
     def solve(
         self, max_num_words: int = 3, minimum_answers: int = 1, skip: str = ""
     ) -> Sequence[tuple]:
-        """Solve the puzzle based on the current dictionary and gameboard.
+        """
+        Solve the puzzle based on the current dictionary and gameboard.
 
         :param max_num_words: The maximum number of words allowed in an answer
         :type max_num_words: int
