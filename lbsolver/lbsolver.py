@@ -22,7 +22,9 @@ class Gameboard:
         """This is the initialzer method."""
 
         if len(board) != 12:
-            raise ValueError(f"{board} is not valid. Board must only be 12 characters")
+            raise ValueError(
+                f"{board} is not valid. Board must only be 12 unique alphabetic characters"
+            )
         if isinstance(board, str):
             if not board.isalpha() or len(set(board)) != 12:
                 raise ValueError(
@@ -380,7 +382,7 @@ if __name__ == "__main__":
         parser.print_usage(sys.stderr)
         if "Board must" in str(exc1):
             print(
-                "LBSolver: error: board is not valid. It must be only 12 alphabetic characters.",
+                "LBSolver: error: board is not valid. It must be only 12 unique alphabetic characters.",
                 file=sys.stderr,
             )
         else:
