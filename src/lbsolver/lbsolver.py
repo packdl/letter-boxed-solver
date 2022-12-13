@@ -4,7 +4,7 @@ import argparse
 from collections import defaultdict
 from collections.abc import Iterator, Sequence
 import sys
-from typing import List
+from typing import List, Optional, Union
 
 
 class Gameboard:
@@ -17,7 +17,7 @@ class Gameboard:
     :raise ValueError: If the board is invalid (incorrect length, non-alphabet characters or repeated characters)
     """
 
-    def __init__(self, board: str | List[str]) -> None:
+    def __init__(self, board: Union[str, List[str]]) -> None:
         """This is the initialzer method."""
 
         if len(board) != 12:
@@ -74,7 +74,7 @@ class Gameboard:
         Side 3: {self.side3}
         Side 4: {self.side4}"""
 
-    def get_side_for_letter(self, letter: str) -> str | None:
+    def get_side_for_letter(self, letter: str) -> Optional[str]:
         """
         Get the side a letter is on.
 
@@ -204,7 +204,7 @@ class LBSolver:
         return valid_sequence
 
     def generate_valid_words(
-        self, dictionary: Sequence[str] | None = None
+        self, dictionary: Optional[Sequence[str]] = None
     ) -> Iterator[str]:
         """
         Based on the current gameboard, generate a set of valid words from
