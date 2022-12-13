@@ -279,9 +279,6 @@ class LBSolver:
             ):
                 return
 
-            if word.strip() in possible_answer:
-                return
-
             if len(self.__answers) >= minimum_answers or word in skip_list:
                 return
 
@@ -313,10 +310,10 @@ class LBSolver:
         return self.__answers
 
 
-if __name__ == "__main__":
-
+def main():  # pragma: no cover
+    """Main function"""
     parser = argparse.ArgumentParser(
-        prog="LBSolver",
+        prog="lbsolver",
         description="Generate solutions to the NYT Letter-Boxed puzzle",
     )
     parser.add_argument(
@@ -409,3 +406,7 @@ if __name__ == "__main__":
             file=args.output,
         )
     args.output.close()
+
+
+if __name__ == "__main__":
+    main()

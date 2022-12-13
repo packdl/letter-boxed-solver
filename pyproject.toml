@@ -4,3 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lbsolver"
+version = "0.9.0"
+authors = [{name="Derik Pack"},]
+description = "A package containing a solver for the NYT Letter Boxed Game"
+readme = "README.md"
+requires-python = ">=3.9"
+
+[project.scripts]
+lbsolver = "lbsolver.lbsolver:main"
