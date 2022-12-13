@@ -390,7 +390,7 @@ def main():  # pragma: no cover
             )
         else:
             print(
-                f"LBSolver: error: {'answer_size' if 'minimum_answers' in str(exc) else 'total_answers'}"
+                f"LBSolver: error: {'answer_size' if 'minimum_answers' in str(exc1) else 'total_answers'}"
                 " must be greater than zero.",
                 file=sys.stderr,
             )
@@ -398,8 +398,8 @@ def main():  # pragma: no cover
         sys.exit(1)
 
     if final_answers:
-        for id, answer in enumerate(final_answers, start=1):
-            print(f"Answer {id:>2}: {'---'.join(answer)}", file=args.output)
+        for a_id, answer in enumerate(final_answers, start=1):
+            print(f"Answer {a_id:>2}: {'---'.join(answer)}", file=args.output)
     else:
         print(
             "No answers for given board and dictionary for requested answer size",
