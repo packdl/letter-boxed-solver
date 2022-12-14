@@ -1,4 +1,6 @@
 from contextlib import nullcontext
+from pathlib import Path
+
 import pytest
 from lbsolver.lbsolver import Gameboard
 from lbsolver.lbsolver import LBSolver
@@ -22,6 +24,8 @@ def gameboard3():
 @pytest.fixture
 def dictionary():
     FILE = "/usr/share/dict/words"
+    if not Path(FILE).exists():
+        FILE = Path(".") / "test_dictionary"
 
     with open(FILE, "r", encoding="utf-8") as dictionary_file:
         dictionary_words = dictionary_file.readlines()
