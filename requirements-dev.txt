@@ -1,5 +1,5 @@
 black
 coverage
-rich
 pytest
 sphinx
+myst-parser

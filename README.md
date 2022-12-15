@@ -25,4 +25,4 @@ Type the following at the command prompt to see command line usage:
 lbsolver -h
 ```
 # Our License
-[Our License](LICENSE)
+[Our License](https://choosealicense.com/licenses/mit/)
