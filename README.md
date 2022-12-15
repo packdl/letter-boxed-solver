@@ -6,7 +6,7 @@ Good recommendations for words files include:
 - The Moby II projects [common](https://www.gutenberg.org/files/3201/files/COMMON.TXT) words file
 
 # Usage
-Using an example on Linux
+## Using an example on a Python REPL in Linux
 ```
 from lbsolver.lbsolver import Gameboard, LBSolver
 board = Gameboard("t n m h r v i k e a u b".split())
@@ -19,6 +19,10 @@ solver = LBSolver(board, dictionary)
 answers = solver.solve(max_num_words=3, minimum_answers=10)
 print(answers)
 ```
-
+## Command line
+Type the following at the command prompt to see command line usage:
+```
+lbsolver -h
+```
 # Our License
 [Our License](LICENSE)
