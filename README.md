@@ -7,6 +7,12 @@ Good recommendations for words files include:
 - The [words](https://en.wikipedia.org/wiki/Words_(Unix)) file included with Linux
 - The Moby II projects [common](https://www.gutenberg.org/files/3201/files/COMMON.TXT) words file
 
+# Installation
+1. Clone the repo
+2. Create a virtual environment
+3. Open a terminal and cd into the cloned directory 
+4. Type: 'python -m pip install -e .' to create an editable install
+
 # Usage
 ## Using an example on a Python REPL in Linux
 ```
