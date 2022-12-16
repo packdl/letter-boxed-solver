@@ -4,7 +4,7 @@ name: Deploy Sphinx site to Pages
 on:
   # Runs on pushes targeting the default branch
   workflow_run:
-    workflows: ["Python package"]
+    workflows: ["Python testing"]
     types:
       - "completed"
     branches:
