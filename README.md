@@ -24,5 +24,8 @@ Type the following at the command prompt to see command line usage:
 ```
 lbsolver -h
 ```
+# The API
+[A simple API](https://packdl.github.io/letter-boxed-solver)
 # Our License
 [Our License](https://choosealicense.com/licenses/mit/)
+
