@@ -1,4 +1,6 @@
 # Introduction
+![Python tests](https://github.com/packdl/letter-boxed-solver/actions/workflows/python-package.yml/badge.svg) ![Pages site](https://github.com/packdl/letter-boxed-solver/actions/workflows/sphinx.yml/badge.svg)
+
 This is a simple script to solve the [NYT Letter Boxed game](https://www.nytimes.com/puzzles/letter-boxed). The user supplies a words file and a Letter Boxed gamehe words file is used to generate winning combinations for Letter Boxed. 
 
 Good recommendations for words files include:
