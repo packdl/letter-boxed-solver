@@ -9,7 +9,7 @@
 project = "Letter Boxed Solver"
 copyright = "2022, Derik Pack"
 author = "Derik Pack"
-release = "0.9"
+version = "0.9.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

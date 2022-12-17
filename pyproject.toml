@@ -22,3 +22,6 @@ classifiers = [
 
 [project.scripts]
 lbsolver = "lbsolver.lbsolver:main"
+
+[project.optional-dependencies]
+dev = ["black", "coverage", "pytest","sphinx","myst-parser"]
