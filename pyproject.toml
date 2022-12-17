@@ -18,6 +18,7 @@ classifiers = [
 
 [project.urls]
 "Homepage" = "https://github.com/packdl/letter-boxed-solver"
+"API Documentation" = "https://packdl.github.io/letter-boxed-solver/"
 
 
 [project.scripts]
