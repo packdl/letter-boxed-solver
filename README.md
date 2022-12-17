@@ -35,5 +35,7 @@ lbsolver -h
 # The API
 [A simple API](https://packdl.github.io/letter-boxed-solver)
 # Our License
-[Our License](https://choosealicense.com/licenses/mit/)
+- [Our License](https://choosealicense.com/licenses/mit/)
+- test_dictionary [license](http://changelogs.ubuntu.com/changelogs/pool/main/s/scowl/scowl_2020.12.07-2/copyright)
+
 
