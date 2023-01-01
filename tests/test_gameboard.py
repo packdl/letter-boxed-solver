@@ -28,6 +28,10 @@ def test_valid_board():
 @pytest.mark.parametrize(
     "my_input,expectation",
     [
+        ("abc:def:ghi:jkl", nullcontext()),
+        ("abc:def:ghi:jjj", pytest.raises(ValueError)),
+        ("abc:def:ghi:1kl", pytest.raises(ValueError)),
+        ("abc:def:ghi:1kl::", pytest.raises(ValueError)),
         ("123k34dlkdfj", pytest.raises(ValueError)),
         ("abcdefg", pytest.raises(ValueError)),
         ("abcdefghijkl", nullcontext()),

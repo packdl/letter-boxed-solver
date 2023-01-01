@@ -1,5 +1,6 @@
 """The lbsolver module provides classes and methods to solve the NYT Letter Boxed game.
 """
+import re
 import argparse
 from collections import defaultdict
 from collections.abc import Iterator, Sequence
@@ -19,26 +20,27 @@ class Gameboard:
     def __init__(self, board: Union[str, List[str]]) -> None:
         """This is the initialzer method."""
 
-        if len(board) != 12:
+        if isinstance(board, str):
+            board = board.strip()
+            if ":" in board:
+                pattern = "([a-zA-Z]{3}:){3}[a-zA-Z]{3}"
+                board_match = re.fullmatch(pattern, board)
+                board = "".join(board.split(":"))
+                if not board_match or len(set(board)) != 12:
+                    raise ValueError(
+                        f"{board} is not valid. Board must be 12 unique alphabetic characters"
+                    )
+            else:
+                if not board.isalpha() or len(set(board)) != 12:
+                    raise ValueError(
+                        f"{board} is not valid. Board must be alphabetic"
+                        " characters only and 12 unique characters"
+                    )
+
+        if len(board) != 12 or not "".join(str(let) for let in board).isalpha():
             raise ValueError(
                 f"{board} is not valid. Board must only be 12 unique alphabetic characters"
             )
-        if isinstance(board, str):
-            if not board.isalpha() or len(set(board)) != 12:
-                raise ValueError(
-                    f"{board} is not valid. Board must be alphabetic"
-                    " characters only and 12 unique characters"
-                )
-        else:
-            try:
-                if not "".join(board).isalpha():
-                    raise ValueError(
-                        f"{board} is not valid. Board must be alphabetic characters only"
-                    )
-            except Exception as exc:
-                raise ValueError(
-                    f"{board} is not valid. Board must be alphabetic characters only"
-                ) from exc
         self._board = "".join(board)
 
     @property
@@ -310,7 +312,7 @@ def main():  # pragma: no cover
     )
     parser.add_argument(
         "board",
-        help="A string representing the board in format 'abcdefghijkl' where each group of 3 letters represents a side. ",
+        help="A string representing the board in format 'abcdefghijkl' or 'abc:def:ghi:jkl' where each group of 3 letters represents a side. ",
         nargs="?",
         default="giyercpolahx",
         type=str,
