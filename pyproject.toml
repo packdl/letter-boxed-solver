@@ -4,7 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lbsolver"
-version = "0.9.1"
 authors = [{name="Derik Pack"},]
 description = "A package containing a solver for the NYT Letter Boxed Game"
 readme = "README.md"
@@ -15,6 +14,7 @@ classifiers = [
      "License :: OSI Approved :: MIT License",
      "Development Status :: 4 - Beta",
 ]
+dynamic = ["version"]
 
 [project.urls]
 "Homepage" = "https://github.com/packdl/letter-boxed-solver"
@@ -26,3 +26,6 @@ lbsolver = "lbsolver.lbsolver:main"
 
 [project.optional-dependencies]
 dev = ["black", "coverage", "pytest","sphinx","myst-parser"]
+
+[tool.setuptools.dynamic]
+version = {attr = "lbsolver.__version__"}
