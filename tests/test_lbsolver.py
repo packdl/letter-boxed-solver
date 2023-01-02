@@ -2,8 +2,7 @@ from contextlib import nullcontext
 from pathlib import Path
 
 import pytest
-from lbsolver.lbsolver import Gameboard
-from lbsolver.lbsolver import LBSolver
+from lbsolver import Gameboard, LBSolver
 
 
 @pytest.fixture
