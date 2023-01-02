@@ -95,17 +95,17 @@ class Gameboard:
         """A utility method creating a default board that is known to generate results
 
         :return: A gameboard composed of 'giyercpolahx'
-        :rtype: :class:`lbsolver.lbsolver.Gameboard`
+        :rtype: :class:`lbsolver.Gameboard`
         """
         return Gameboard("g i y e r c p o l a h x".split())
 
 
 class LBSolver:
-    """This is the solver class. It requires a :class:`lbsolver.lbsolver.Gameboard`
+    """This is the solver class. It requires a :class:`lbsolver.Gameboard`
     and a dictionary to generate a set of answers to the Letter Boxed game.
 
     :param gameboard: A gameboard representing the letters in the Letter Boxed game
-    :type gameboard: :class: `lbsolver.lbsolver.Gameboard`
+    :type gameboard: :class: `lbsolver.Gameboard`
     :param dictionary: A backing dictionary to use to find potential answers
     :type dictionary: Sequence[str]
     :raise TypeError: If gameboard or dictionary is set to None

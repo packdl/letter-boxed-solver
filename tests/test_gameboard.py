@@ -1,6 +1,6 @@
 from contextlib import nullcontext
 import pytest
-from lbsolver.lbsolver import Gameboard
+from lbsolver import Gameboard
 
 
 def test_default_board():

@@ -16,7 +16,7 @@ Good recommendations for words files include:
 # Usage
 ## Using an example on a Python REPL in Linux
 ```
-from lbsolver.lbsolver import Gameboard, LBSolver
+from lbsolver import Gameboard, LBSolver
 board = Gameboard("t n m h r v i k e a u b".split())
 FILE = '/usr/share/dict/words'
 with open(FILE,'r') as my_file:
