@@ -2,5 +2,5 @@ API
 ===
 .. automodule:: lbsolver
    :members: Gameboard, LBSolver
-   :undoc-members:
+   :undoc-members: 
    :exclude-members: main
